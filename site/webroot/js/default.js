@@ -72,7 +72,7 @@ function webSocket()
 
 	//判断当前浏览器是否支持WebSocket
 	if('WebSocket' in window){
-		socket = new WebSocket("ws://"+_HOST_+":7777");
+		socket = new WebSocket("ws://127.0.0.1:7777");
 	}else{
 		toastr.error("Don't support webSocket");
 	}

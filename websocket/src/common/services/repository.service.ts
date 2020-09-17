@@ -10,21 +10,21 @@ export interface Id {
 export class RepositoryService<T extends Id> {
 
   constructor(
-    private repository: Repository<T>
+    private repository: Repository<T>,
   ) { }
 
-  async findAll(index: number, size: number): Promise<ResultList<T>> {
+  async findAll(index: number, size: number, query: string): Promise<ResultList<T>> {
     return new Promise<ResultList<T>>(async (x) => {
       const result: ResultList<T> = {
-        list: await this.repository.find({ skip: size * (index - 1), take: size }),
-        count: await this.repository.count(),
+        list: await this.repository.find({ skip: size * (index - 1), take: size, where: query}),
+        count: await this.repository.count({where: query}),
         query: {
-          index: index,
-          size: size
-        }
+          index,
+          size,
+        },
       };
       x(result);
-    })
+    });
   }
 
   async findOne(id: string | number | Date | ObjectID): Promise<T> {
@@ -42,12 +42,12 @@ export class RepositoryService<T extends Id> {
       await getManager().transaction(async transactionalEntityManager => {
         await transactionalEntityManager.save(index);
       });
-      return index
+      return index;
     }
   }
 
   async remove(id: string | number | Date | ObjectID): Promise<any> {
-    let entity = await this.repository.findOne(id);
+    const entity = await this.repository.findOne(id);
     return await this.repository.remove(entity);
   }
 

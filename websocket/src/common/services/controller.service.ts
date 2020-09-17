@@ -1,6 +1,6 @@
-import { Injectable, Get, Param, Post, Body, Put, Delete, ParseIntPipe, Query } from "@nestjs/common";
-import { Id, RepositoryService } from "./repository.service";
-import { ResultList } from "../interfaces/result.interface";
+import { Injectable, Get, Param, Post, Body, Put, Delete, ParseIntPipe, Query } from '@nestjs/common';
+import { Id, RepositoryService } from './repository.service';
+import { ResultList } from '../interfaces/result.interface';
 
 @Injectable()
 export class ControllerService<T extends Id> {
@@ -12,7 +12,7 @@ export class ControllerService<T extends Id> {
     @Param('index', new ParseIntPipe()) index: number = 1,
     @Param('size', new ParseIntPipe()) size: number = 10,
     @Query() query): Promise<ResultList<T>> {
-    return await this.service.findAll(index, size);
+    return await this.service.findAll(index, size, query);
   }
 
   @Get(':id')
@@ -36,4 +36,3 @@ export class ControllerService<T extends Id> {
   }
 
 }
-

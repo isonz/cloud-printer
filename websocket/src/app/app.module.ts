@@ -9,6 +9,7 @@ import { HomeModule } from './home/home.module';
 import {APP_GUARD} from '@nestjs/core';
 import {AuthGuard} from './auth.guard';
 import {News} from '../data/entities/News';
+import {EventsGateway} from './home/events.gateway';
 
 @Module({
   imports: [
@@ -37,7 +38,7 @@ import {News} from '../data/entities/News';
     //   provide: APP_GUARD,
     //   useClass: AuthGuard,
     // },
-
+    EventsGateway,
     AppService,
   ],
 })

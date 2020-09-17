@@ -27,7 +27,7 @@
     "@nestjs/platform-socket.io": "^7.4.4",
     "@nestjs/swagger": "^4.5.12",
     "@nestjs/typeorm": "^7.1.0",
-    "@nestjs/websockets": "^7.4.4",
+    "@nestjs/websockets": "^6.11.11",
     "chalk": "^4.1.0",
     "class-transformer": "^0.2.3",
     "class-validator": "^0.12.2",
