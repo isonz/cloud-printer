@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title></title>
+    <script>window.$ = window.jQuery = require('./js/jquery/jquery-3.2.1.min.js');</script>
+</head>
+<body>
+    <div id="printPreview"></div>
+
+    <script>
+    const ipcRenderer = require('electron').ipcRenderer;
+    ipcRenderer.on('request', function (event, arg) {
+        //doGet(arg);
+        ajax(arg);
+    });
+
+    function ajax(url) {
+            $.ajax({
+                url: url,
+                type: "GET",
+                data: {},
+                //dataType: "json",
+                success: function (result) {
+                    if (0 == result.code) {
+                        // success
+                    } else {
+                        // fail
+                    }
+                    //console.log(result);
+                    $("#printPreview").html(result);
+                    setTimeout(function () {
+                        pcRenderer.send('print', { silent: true, printBackground: false });
+                    }, 2000);
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    console.log(XMLHttpRequest.status);
+                    console.log(XMLHttpRequest.readyState);
+                    console.log(textStatus);
+                }
+            });
+        }
+
+
+
+        let xmlHttp = null;
+        function callback() {
+            if (xmlHttp.readyState === 4 && xmlHttp.status === 200) {
+                let d = xmlHttp.responseText;
+                console.log(d);
+                ipcRenderer.send('print', '');
+            }
+        }
+        function doGet(url) {
+            xmlHttp = new XMLHttpRequest();
+            xmlHttp.open("GET", url, true);
+            xmlHttp.onreadystatechange = callback;
+            xmlHttp.send();
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,19 @@
+<link rel="stylesheet" href="/misc/js/date/mobiscroll/mobiscroll.core-2.6.2.css" type="text/css">
+<link rel="stylesheet" href="/misc/js/date/mobiscroll/mobiscroll.android-ics-2.6.2.css" type="text/css">
+<script type="text/javascript" src="/misc/js/date/mobiscroll/mobiscroll.core-2.6.2.js"></script>
+<script type="text/javascript" src="/misc/js/date/mobiscroll/mobiscroll.datetime-2.6.2.js"></script>
+<script type="text/javascript" src="/misc/js/date/mobiscroll/mobiscroll.core-2.6.2-zh.js"></script>
+
+
+function getDate() {
+        var now = new Date();
+        var maxDate = new Date(now.getFullYear() + 100, now.getMonth(), now.getDate());
+        var minDate = new Date(now.getFullYear() - 120, now.getMonth(), now.getDate());
+        var opt = {date:{preset : 'date', minDate: minDate, maxDate: maxDate}};
+        $('#birthday').val('').scroller('destroy').scroller($.extend(opt.date, {theme:'android-ics light', mode:'scroller', display:'modal', lang:'zh', rtl:true }));
+    }
+
+getDate();
+
+                <input class="ui-date required date" type="date" id="birthday" name="base[出生年月]" >
+

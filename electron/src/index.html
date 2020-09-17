@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <script>window.$ = window.jQuery = require('./js/jquery/jquery-3.2.1.min.js');</script>
+  </head>
+  <body>
+
+<div id="pdf-path"></div>
+<button class="demo-button" id="print-pdf">Print PDF</button>
+
+<button class="demo-button" id="print-silent">Print Silent</button>
+<button class="demo-button" id="print-preview">Print Preview</button>
+
+
+  <script>
+  const ipc = require('electron').ipcRenderer;
+  const printPDFBtn = document.getElementById('print-pdf');
+  printPDFBtn.addEventListener('click', function (event) { 
+    ipc.send('print-to-pdf');
+  });
+  ipc.on('wrote-pdf', function (event, path) { 
+    const message = `Wrote PDF to:${path}`;
+    document.getElementById('pdf-path').innerHTML = message 
+  });
+
+
+  const printSilentBtn = document.getElementById('print-silent');
+  printSilentBtn.addEventListener('click', function (event) {
+    ipc.send('print-silent', "https://www.so.com/");
+  });
+
+  const printPerviewBtn = document.getElementById('print-preview');
+  printPerviewBtn.addEventListener('click', function (event) {
+    ipc.send('print-preview', "https://www.so.com/");
+  });
+
+
+  </script>
+  </body>
+</html>

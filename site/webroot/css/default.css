@@ -1,0 +1,16 @@
+#header a{
+    display: block;
+    width: 50%;
+    float: left;
+    line-height: 40px;
+    font-size: 24px;
+    text-align: center;
+}
+
+#print_area{
+    width: 400px;
+    margin: 0 auto;
+    min-height: 100px;
+    background: #fff;
+    border: 1px #f6f6f6;
+}
