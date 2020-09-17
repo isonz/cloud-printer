@@ -1,8 +1,8 @@
 <?php
-class Users extends ABase
+class Locations extends ABase
 {
 	static public $_class = __CLASS__;
-	static public $_table = '#_users';
+	static public $_table = '#_locations';
 	
 	static public function getData(array $condition)
 	{

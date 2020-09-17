@@ -7,15 +7,10 @@ foreach (glob(_MODS."/*.php") as $mods){
 	require_once $mods;
 }
 
-/*
 foreach (glob(_SMARTY."/*.php") as $lib_smarty){
 	require_once $lib_smarty;
 }
-*/
 
-foreach (glob(_LIBS."/Wechat/*.php") as $wechat){
-	require_once $wechat;
-}
 
 /*
 //----------------- user
