@@ -11,7 +11,7 @@
  Target Server Version : 50649
  File Encoding         : 65001
 
- Date: 17/09/2020 15:35:57
+ Date: 18/09/2020 19:19:19
 */
 
 SET NAMES utf8mb4;
@@ -56,9 +56,9 @@ CREATE TABLE `cp_locations` (
 -- Records of cp_locations
 -- ----------------------------
 BEGIN;
-INSERT INTO `cp_locations` VALUES (1, '湾仔店', NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `cp_locations` VALUES (2, '旺角店', NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `cp_locations` VALUES (3, '荃湾店', 'rererer', NULL, NULL, NULL, NULL);
+INSERT INTO `cp_locations` VALUES (1, '湾仔店', 'Canon_TS9580_series', NULL, NULL, NULL, NULL);
+INSERT INTO `cp_locations` VALUES (2, '旺角店', 'Canon_TS9580_series', NULL, NULL, NULL, NULL);
+INSERT INTO `cp_locations` VALUES (3, '荃湾店', 'Canon_TS9580_series', NULL, NULL, NULL, NULL);
 COMMIT;
 
 -- ----------------------------
@@ -74,17 +74,5 @@ CREATE TABLE `cp_print` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `locationId_checklistId` (`location_id`,`checklist_id`) USING BTREE
 ) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4;
-
--- ----------------------------
--- Records of cp_print
--- ----------------------------
-BEGIN;
-INSERT INTO `cp_print` VALUES (1, 2, 2, 2, 0);
-INSERT INTO `cp_print` VALUES (2, 1, 2, 1, 0);
-INSERT INTO `cp_print` VALUES (3, 3, 2, 1, 0);
-INSERT INTO `cp_print` VALUES (4, 1, 1, 5, 0);
-INSERT INTO `cp_print` VALUES (5, 3, 1, 4, 0);
-INSERT INTO `cp_print` VALUES (6, 2, 1, 10, 0);
-COMMIT;
 
 SET FOREIGN_KEY_CHECKS = 1;
