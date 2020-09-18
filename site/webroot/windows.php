@@ -1,17 +1,8 @@
 <?php
-$id  = isset($_POST['id']) ? $_POST['id'] : 0;
-$printer  = isset($_POST['printer']) ? $_POST['printer'] : null;
-
-if($id){
-    $data = array('printer_01' => $printer);
-    Locations::update($id, $data);
-    exit;
+$checklistId  = isset($_POST['checklistId']) ? (int)$_POST['checklistId'] : 0;
+if($checklistId){
+    $data = Checklist::getOne(array('id' => $checklistId));
+    exit(json_encode($data));
 }
 
-
-
-
-$locations = Locations::getAll();
-
-Templates::Assign('locations', $locations);
 Templates::Display('windows.tpl');

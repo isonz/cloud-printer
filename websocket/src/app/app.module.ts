@@ -8,8 +8,10 @@ import { getMetadataArgsStorage } from 'typeorm';
 import { HomeModule } from './home/home.module';
 import {APP_GUARD} from '@nestjs/core';
 import {AuthGuard} from './auth.guard';
-import {News} from '../data/entities/News';
-import {EventsGateway} from './home/events.gateway';
+import {EventsGateway} from './events.gateway';
+import {CpPrint} from '../data/entities/CpPrint';
+import {CpChecklist} from '../data/entities/CpChecklist';
+import {CpLocations} from '../data/entities/CpLocations';
 
 @Module({
   imports: [
@@ -28,7 +30,7 @@ import {EventsGateway} from './home/events.gateway';
       timeout: 5000,
       maxRedirects: 5,
     }),
-    TypeOrmModule.forFeature([News]),
+    TypeOrmModule.forFeature([CpPrint, CpChecklist, CpLocations]),
 
     HomeModule,
   ],

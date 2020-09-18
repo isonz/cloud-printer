@@ -3,40 +3,130 @@
   <head>
     <meta charset="utf-8">
     <title></title>
+    <link href="./bootstrap/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="./toastr/toastr.min.css"/>
+    <link rel="stylesheet" href="./css/default.css" type="text/css"/>
+
     <script>window.$ = window.jQuery = require('./js/jquery/jquery-3.2.1.min.js');</script>
+    <script src="./bootstrap/bootstrap.min.js"></script>
+<!--    <script src="./toastr/toastr.min.js"></script>-->
+<!--    <script src="./js/comm.js"></script>-->
+    <script src="./js/socket.io.js"></script>
+    <style>
+      html, body{
+        background: #eee;
+      }
+      #print_area{
+        width: 400px;
+      }
+    </style>
+
   </head>
   <body>
 
 <div id="pdf-path"></div>
 <button class="demo-button" id="print-pdf">Print PDF</button>
-
 <button class="demo-button" id="print-silent">Print Silent</button>
 <button class="demo-button" id="print-preview">Print Preview</button>
+<button class="demo-button" id="reload-page">Reload</button>
+
+<h1 style="text-align: center">自动打印</h1>
+<div class="container" style="padding-top: 40px;">
+
+  <div class="print_area" id="print_area">
 
 
-  <script>
+  </div>
+
+</div>
+
+<script>
+  var checklistId = 0;
+  var printId = 0;
+  var locationId = 0;
+  var userId = 0;
+  var printName = '';
+
+  let socket = io('http://localhost:7777');
+  socket.on('connect', function () {
+    // toastr.success("Connect success !");
+
+    setInterval(function () {
+      socket.emit('queryPrint', {name: 'listenStatus'});
+    }, 5000);
+
+    // 发射
+    /*
+     socket.emit('events', {name: 'alone'}, (response) => {
+         console.log(response);
+     });
+
+    // 发射
+    // socket.emit('identity', 0, (response) => console.log('Identity:', response));
+    */
+  });
+
+  // 监听
+  socket.on('eventListenPrintStatus', (data) => {
+    // console.log(data);
+    if(null !== data && 'undefinde' !== typeof data.print.checklistId){
+      printId = parseInt(data.print.id);
+      checklistId = parseInt(data.print.checklistId);
+      locationId = parseInt(data.print.locationId);
+      printName = data.location.printer_01;
+      //console.log(printName);
+      //console.log(checklistId);
+      socket.emit('queryChecklist', {name: 'listenId', id: checklistId} );
+    }
+  });
+
+  socket.on('eventListenChecklistId', (data) => {
+    userId = parseInt(data.userId);
+    $('#print_area').html(data.content);
+
+    ipc.send('print-silent', printName);
+    setTimeout(function () {
+      socket.emit('setPrintStatus', {name: 'setStatus', id: printId} );
+    }, 5000);
+  });
+
+  socket.on('eventSetPrintStatus', (data) => {
+    // 更新打印状态后的处理
+  });
+
+  // IPC.send('print-silent', {"orderCode":orderCode, "prints": PRINTS});         //打印
+
+</script>
+
+<script>
   const ipc = require('electron').ipcRenderer;
   const printPDFBtn = document.getElementById('print-pdf');
-  printPDFBtn.addEventListener('click', function (event) { 
-    ipc.send('print-to-pdf');
+  printPDFBtn.addEventListener('click', function (event) {
+    ipc.send('print-to-pdf', userId + '-' + checklistId + '-' + locationId);
   });
-  ipc.on('wrote-pdf', function (event, path) { 
+  ipc.on('wrote-pdf', function (event, path) {
     const message = `Wrote PDF to:${path}`;
-    document.getElementById('pdf-path').innerHTML = message 
+    document.getElementById('pdf-path').innerHTML = message
   });
 
 
   const printSilentBtn = document.getElementById('print-silent');
   printSilentBtn.addEventListener('click', function (event) {
-    ipc.send('print-silent', "https://www.so.com/");
+    ipc.send('print-silent', printName);
+    socket.emit('setPrintStatus', {name: 'setStatus', id: printId} );
   });
 
   const printPerviewBtn = document.getElementById('print-preview');
   printPerviewBtn.addEventListener('click', function (event) {
-    ipc.send('print-preview', "https://www.so.com/");
+    ipc.send('print-preview', '');
   });
 
+  const reloadPageBtn = document.getElementById('reload-page');
+  reloadPageBtn.addEventListener('click', function (event) {
+    location.reload();
+  });
 
-  </script>
+</script>
+
   </body>
 </html>

@@ -6,6 +6,8 @@
     }
 </style>
 
+
+
 <h1 style="text-align: center">自动打印</h1>
 <div class="container" style="padding-top: 40px;">
 
@@ -19,27 +21,35 @@
 <{include file="footer.tpl"}>
 
 <script>
-    const l = console.log
-    let socket = io('http://localhost:7777');
-    socket.on('connect', function () {
-        console.log('链接成功');
+let socket = io('http://localhost:7777');
+socket.on('connect', function () {
+    toastr.success("Connect success !");
+    socket.emit('queryPrint', {name: 'listenStatus'});
 
-        // 发射
-        socket.emit('events', {
-            name: 'ajanuw'
-        });
+    // 发射
+    /*
+     socket.emit('events', {name: 'alone'}, (response) => {
+         console.log(response);
+     });
 
-        // 发射
-        socket.emit('events', {
-            name: 'alone'
-        });
+    // 发射
+    // socket.emit('identity', 0, (response) => console.log('Identity:', response));
+    */
+});
 
-        // 发射
-        // socket.emit('identity', 0, (response) => console.log('Identity:', response));
-    });
+// 监听
+socket.on('eventListenPrintStatus', (data) => {
+    if(null !== data && 'undefinde' !== typeof data.print.checklistId){
+        var checklistId = parseInt(data.print.checklistId);
+        //console.log(checklistId);
+        socket.emit('queryChecklist', {name: 'listenId', id: checklistId} );
+    }
+});
 
-    // 监听
-    socket.on('events', (data) => {
-        l(data.msg)
-    });
+socket.on('eventListenChecklistId', (data) => {
+   $('#print_area').html(data.content);
+});
+
+// IPC.send('print-silent', {"orderCode":orderCode, "prints": PRINTS});         //打印
+
 </script>
